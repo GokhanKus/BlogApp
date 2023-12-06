@@ -12,8 +12,12 @@ namespace BlogApp
 
 			#region DataBaseBaglanti
 
-			var connectionString = builder.Configuration.GetConnectionString("sqLiteConnection");
-			builder.Services.AddDbContext<BlogContext>(options=>options.UseSqlite(connectionString));
+			//var connectionString = builder.Configuration.GetConnectionString("sqLiteConnection");
+			//builder.Services.AddDbContext<BlogContext>(options=>options.UseSqlite(connectionString));	
+
+			var version = new MySqlServerVersion(new Version(8, 0, 35));
+			var connectionString = builder.Configuration.GetConnectionString("mySqlConnection");
+			builder.Services.AddDbContext<BlogContext>(options => options.UseMySql(connectionString,version));
 
 			#endregion
 
