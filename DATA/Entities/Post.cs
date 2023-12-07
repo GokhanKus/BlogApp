@@ -12,6 +12,7 @@ namespace DATA.Entities
         public string? Title { get; set; }
         public string? Content { get; set; }
         public bool IsActive { get; set; }
+        public string? Image { get; set; }
         public List<Tag> Tags { get; set; } = new List<Tag>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public int UserId { get; set; }

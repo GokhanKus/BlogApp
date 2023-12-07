@@ -1,3 +1,5 @@
+using BUSINESS.Abstract;
+using BUSINESS.Concrete;
 using DAL.Context;
 using DAL.DataSeeding;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +14,19 @@ namespace BlogApp
 
 			#region DataBaseBaglanti
 
-			//var connectionString = builder.Configuration.GetConnectionString("sqLiteConnection");
-			//builder.Services.AddDbContext<BlogContext>(options=>options.UseSqlite(connectionString));	
+			var connectionString = builder.Configuration.GetConnectionString("sqLiteConnection"); //sqlite icin baaglanti
+			builder.Services.AddDbContext<BlogContext>(options => options.UseSqlite(connectionString));
 
-			var version = new MySqlServerVersion(new Version(8, 0, 35));
-			var connectionString = builder.Configuration.GetConnectionString("mySqlConnection");
-			builder.Services.AddDbContext<BlogContext>(options => options.UseMySql(connectionString,version));
+			//var version = new MySqlServerVersion(new Version(8, 0, 35));
+			//var connectionString = builder.Configuration.GetConnectionString("mySqlConnection"); //mysql icin baglanti
+			//builder.Services.AddDbContext<BlogContext>(options => options.UseMySql(connectionString,version));
 
 			#endregion
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
+			builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 			var app = builder.Build();
 
@@ -47,6 +50,8 @@ namespace BlogApp
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			//app.MapDefaultControllerRoute();
 
 			app.Run();
 		}
