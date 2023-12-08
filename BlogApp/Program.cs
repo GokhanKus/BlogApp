@@ -26,7 +26,12 @@ namespace BlogApp
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
+			#region Injectionlar
+
 			builder.Services.AddScoped<IPostRepository, PostRepository>();
+			builder.Services.AddScoped<ITagRepository, TagRepository>();
+
+			#endregion
 
 			var app = builder.Build();
 
