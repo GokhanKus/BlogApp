@@ -53,6 +53,7 @@ namespace DAL.DataSeeding
 							Title = "Asp.net Core",
 							Content = "AspNET core dersleri",
 							IsActive = true,
+							Image = "1.jpg",
 							CreatedTime = DateTime.Now.AddDays(-15), //15 gun once kayit edilmis olsun
 							Tags = context.Tags.Take(3).ToList(), //bu post dbdeki tags tablosunun ilk 3 tage sahip olsun
 							UserId = 1
@@ -62,6 +63,7 @@ namespace DAL.DataSeeding
 							Title = "PHP",
 							Content = "PHP dersleri",
 							IsActive = true,
+							Image = "2.jpg",
 							CreatedTime = DateTime.Now.AddDays(-10), //15 gun once kayit edilmis olsun
 							Tags = new List<Tag> { new Tag { Text = "Full-Stack" }, new Tag { Text = "Test Tag" } }, //bu post'a burada da tag ekleyebiliriz.
 							UserId = 1 //userId'si 1 olan kisiye ait olsun bu post
@@ -71,6 +73,7 @@ namespace DAL.DataSeeding
 							Title = "Unreal Engine",
 							Content = "Unreal Engine dersleri",
 							IsActive = true,
+							Image = "3.jpg",
 							CreatedTime = DateTime.Now,
 							Tags = context.Tags.Skip(4).Take(2).ToList(), //bu post dbdeki tag tablosunun ilk 4'unu es gecip ondan sonraki 2 tane tage sahip olsun
 							UserId = 2
