@@ -18,11 +18,10 @@ namespace BlogApp.Controllers
 		#endregion
 		
 		private readonly IPostRepository _postRepository;
-		private readonly ITagRepository _tagRepository;
-		public PostsController(IPostRepository postRepository, ITagRepository tagRepository)
+		//private readonly ITagRepository _tagRepository; 
+		public PostsController(IPostRepository postRepository)
         {
 			_postRepository = postRepository;
-			_tagRepository = tagRepository;
 		}
         public IActionResult Index()
 		{
@@ -31,7 +30,7 @@ namespace BlogApp.Controllers
 			var model = new PostsViewModel
 			{
 				Posts = _postRepository.Posts.ToList(),
-				Tags = _tagRepository.Tags.ToList()
+				//Tags = _tagRepository.Tags.ToList() viewcomponent kullandık artık her seferinde tekrar tekrar aynı kodu yazmayacagiz
 			};
 
 			return View(model);
@@ -39,3 +38,6 @@ namespace BlogApp.Controllers
 		}
 	}
 }
+/*
+ Partial view bir controller tetiklemek zorunda, ama viewcomponent tek tabanccadır kendi componenti vardır kendi kendine çalışır.
+ */
