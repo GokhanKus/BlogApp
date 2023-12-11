@@ -56,7 +56,11 @@ namespace BlogApp
 				name: "post_details",
 				pattern: "posts/{url}", //blog hep sabit url degisken, hangisiyle eslesirse o controller'a yonlendirir
 				defaults: new { controller = "Posts", action = "Details" });
-			
+
+			app.MapControllerRoute(
+				name: "posts_by_tag",
+				pattern: "posts/tag/{tag}",
+				defaults: new { controller = "Posts", action = "Index" });
 
 			app.MapControllerRoute(
 				name: "default",

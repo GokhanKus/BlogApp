@@ -24,19 +24,27 @@ namespace BlogApp.Controllers
         {
 			_postRepository = postRepository;
 		}
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string tag)
 		{
-			//var model = _postRepository.Posts.ToList();
+			var posts = _postRepository.Posts;
+
+			if (!string.IsNullOrEmpty(tag))
+			{
+				posts = posts.Where(x=>x.Tags.Any(p=>p.Url == tag));
+			}
+
 
 			var model = new PostsViewModel
 			{
-				Posts = _postRepository.Posts.ToList(),
+				Posts = await posts.ToListAsync()
+				//Posts = _postRepository.Posts.ToList(),
 				//Tags = _tagRepository.Tags.ToList() viewcomponent kullandık artık her seferinde tekrar tekrar aynı kodu yazmayacagiz
 			};
 
 			return View(model);
 
 		}
+		//kosulu henuz veritabanına gondermedik tolist() diyerek gondeririz.
 		public async Task<IActionResult> Details(string? url) //detay sayfasına giderken url kısmı bizim belirledigimiz gibi olsun
 		{
 			var model = await _postRepository.Posts.FirstOrDefaultAsync(p=>p.Url == url);
