@@ -2,6 +2,7 @@
 using BUSINESS.Abstract;
 using DAL.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.Controllers
 {
@@ -35,6 +36,11 @@ namespace BlogApp.Controllers
 
 			return View(model);
 
+		}
+		public async Task<IActionResult> Details(int? id)
+		{
+			var model = await _postRepository.Posts.FirstOrDefaultAsync(p=>p.Id == id);
+			return View(model);
 		}
 	}
 }
