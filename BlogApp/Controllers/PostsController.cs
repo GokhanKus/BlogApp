@@ -37,9 +37,9 @@ namespace BlogApp.Controllers
 			return View(model);
 
 		}
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(string? url) //detay sayfasına giderken url kısmı bizim belirledigimiz gibi olsun
 		{
-			var model = await _postRepository.Posts.FirstOrDefaultAsync(p=>p.Id == id);
+			var model = await _postRepository.Posts.FirstOrDefaultAsync(p=>p.Url == url);
 			return View(model);
 		}
 	}

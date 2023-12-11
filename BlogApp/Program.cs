@@ -46,11 +46,17 @@ namespace BlogApp
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
+
 			app.UseStaticFiles();
-
 			app.UseRouting();
-
 			app.UseAuthorization();
+
+
+			app.MapControllerRoute( //url'de detaylarda id yerine tanýmladigimiz url gelsin
+				name: "post_details",
+				pattern: "posts/{url}", //blog hep sabit url degisken, hangisiyle eslesirse o controller'a yonlendirir
+				defaults: new { controller = "Posts", action = "Details" });
+			
 
 			app.MapControllerRoute(
 				name: "default",
