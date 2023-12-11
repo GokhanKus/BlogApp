@@ -38,6 +38,7 @@
 		@*burada tag list vardı her sayfada ayrı ayrı yazmak yerine viewcomponent yaptık, artık her yerden tek bir yer sayesinde erisecek*@
 		@* <vc:tags-menu></vc:tags-menu> *@ @*viewcomponenti boyle cagiriyoruz.*@
 		@await Component.InvokeAsync("TagsMenu")
+		@await Component.InvokeAsync("NewPosts")
 	</div>
 
 </div>
