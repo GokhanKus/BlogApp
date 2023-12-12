@@ -47,7 +47,10 @@ namespace BlogApp.Controllers
 		//kosulu henuz veritabanına gondermedik tolist() diyerek gondeririz.
 		public async Task<IActionResult> Details(string? url) //detay sayfasına giderken url kısmı bizim belirledigimiz gibi olsun
 		{
-			var model = await _postRepository.Posts.FirstOrDefaultAsync(p=>p.Url == url);
+			var model = await _postRepository
+				.Posts
+				.Include(x=> x.Tags)
+				.FirstOrDefaultAsync(p=>p.Url == url);
 			return View(model);
 		}
 	}

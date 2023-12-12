@@ -1,4 +1,5 @@
-﻿using DATA.Infrastructure.Entity;
+﻿using DATA.Enums;
+using DATA.Infrastructure.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace DATA.Entities
 	{
         public string? Text { get; set; }
         public string? Url{ get; set; }
+        public TagColors? Color{ get; set; }
         public List<Post> Posts { get; set; } = new List<Post>();
     }
 }

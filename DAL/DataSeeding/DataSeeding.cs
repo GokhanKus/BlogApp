@@ -1,5 +1,6 @@
 ﻿using DAL.Context;
 using DATA.Entities;
+using DATA.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,13 +28,13 @@ namespace DAL.DataSeeding
 				if (!context.Tags.Any()) //dbde tags tablosunda hic kayit yoksa;
 				{
 					context.Tags.AddRange(
-						new Tag { Text = "Web Programlama", Url="web-programlama"},
-						new Tag { Text = "Front End" , Url = "front-end" },
-						new Tag { Text = "Back End", Url = "back-end" },
-						new Tag { Text = "Unity", Url = "unity" },
-						new Tag { Text = "Unreal Engine" , Url = "unreal-engine" },
-						new Tag { Text = "Game Development ", Url = "game-development" },
-						new Tag { Text = "Yazilim",Url = "yazilim", Posts = context.Posts.ToList()}
+						new Tag { Text = "Web Programlama", Url = "web-programlama", Color = TagColors.info },
+						new Tag { Text = "Front End", Url = "front-end", Color = TagColors. primary},
+						new Tag { Text = "Back End", Url = "back-end", Color = TagColors.warning },
+						new Tag { Text = "Unity", Url = "unity", Color = TagColors.success },
+						new Tag { Text = "Unreal Engine", Url = "unreal-engine", Color = TagColors.danger },
+						new Tag { Text = "Game Development ", Url = "game-development", Color = TagColors.dark },
+						new Tag { Text = "Yazilim", Url = "yazilim", Color = TagColors.primary, Posts = context.Posts.ToList() }
 					);
 					context.SaveChanges();
 				}
@@ -64,18 +65,18 @@ namespace DAL.DataSeeding
 						{
 							Title = "PHP",
 							Content = "PHP dersleri",
-							Url="php",
+							Url = "php",
 							IsActive = true,
 							Image = "2.jpg",
 							CreatedTime = DateTime.Now.AddDays(-10), //15 gun once kayit edilmis olsun
-							Tags = new List<Tag> { new Tag { Text = "Full-Stack", Url="full-stack"}, new Tag { Text = "Test Tag",Url="test-tag" } }, //bu post'a burada da tag ekleyebiliriz.
+							Tags = new List<Tag> { new Tag { Text = "Full-Stack", Url = "full-stack", Color = TagColors.secondary }, new Tag { Text = "Test Tag", Url = "test-tag", Color = TagColors.secondary } }, //bu post'a burada da tag ekleyebiliriz.
 							UserId = 1 //userId'si 1 olan kisiye ait olsun bu post
 						},
 						new Post
 						{
 							Title = "Unreal Engine",
 							Content = "Unreal Engine dersleri",
-							Url ="unreal-engine",
+							Url = "unreal-engine",
 							IsActive = true,
 							Image = "3.jpg",
 							CreatedTime = DateTime.Now,
@@ -86,7 +87,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "React",
 							Content = "React dersleri",
-							Url ="react",
+							Url = "react",
 							IsActive = true,
 							Image = "3.jpg",
 							CreatedTime = DateTime.Now.AddDays(-45),
@@ -97,7 +98,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Django",
 							Content = "Django dersleri",
-							Url ="Django",
+							Url = "Django",
 							IsActive = true,
 							Image = "3.jpg",
 							CreatedTime = DateTime.Now,
@@ -108,7 +109,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Angular",
 							Content = "Angular dersleri",
-							Url ="angular",
+							Url = "angular",
 							IsActive = true,
 							Image = "3.jpg",
 							CreatedTime = DateTime.Now.AddDays(-60),

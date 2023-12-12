@@ -4,12 +4,13 @@
 	<div class="col-lg-8">
 		<div class="bg-white p-4">
 			<h1 class="h4 mb-4">@Model.Title</h1>
-
 			<div class="tags">
-				<a href="#" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">Php</a>
-				<a href="#" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">Web Development</a>
+				@foreach (var tag in Model.Tags)
+				{
+					<a href="/posts/tag/@tag.Url" class="badge bg-@tag.Color bg-opacity-10 text-@tag.Color mb-2 fw-bold">@tag.Text</a>
+				}
 			</div>
-			<img src="~/img/@Model.Image" class="img-fluid rounded" alt=""/>
+			<img src="~/img/@Model.Image" class="img-fluid rounded" alt="" />
 			<div>
 				@Model.Content
 			</div>
@@ -27,10 +28,13 @@
 	<div class="col-lg-4">
 
 		@*burada tag list vardı her sayfada ayrı ayrı yazmak yerine viewcomponent yaptık, artık her yerden tek bir yer sayesinde erisecek*@
+
 		<vc:tags-menu></vc:tags-menu> @*viewcomponenti boyle cagiriyoruz.*@
 		<vc:new-posts></vc:new-posts>
+
 		@* @await Component.InvokeAsync("TagsMenu")
 		@await Component.InvokeAsync("NewPosts") *@
+
 	</div>
 
 </div>
