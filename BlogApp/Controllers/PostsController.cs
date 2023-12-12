@@ -55,6 +55,10 @@ namespace BlogApp.Controllers
 				.FirstOrDefaultAsync(p => p.Url == url);
 			return View(model);
 		}
+		public IActionResult AddComment(string postId, string UserName, string text)
+		{
+			return View();
+		}
 	}
 }
 /*

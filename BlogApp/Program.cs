@@ -54,7 +54,7 @@ namespace BlogApp
 
 			app.MapControllerRoute( //url'de detaylarda id yerine tanýmladigimiz url gelsin
 				name: "post_details",
-				pattern: "posts/{url}", //blog hep sabit url degisken, hangisiyle eslesirse o controller'a yonlendirir
+				pattern: "posts/details/{url}", //posts/details hep sabit url degisken, hangisiyle eslesirse o controller'a yonlendirir
 				defaults: new { controller = "Posts", action = "Details" });
 
 			app.MapControllerRoute(

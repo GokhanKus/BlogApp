@@ -34,6 +34,29 @@
 							</div>
 						</div>
 					}
+					<hr class="my-4"/>
+					<div>
+						<h4>Yorum Ekle</h4>
+						<form asp-action="AddComment" method="post">
+							<input type="hidden" value="@Model.Id" name="postId"/>
+
+							<div class="col-md-12">
+								<label for="UserName" class="form-label">UserName</label>
+								<input type="text" name="UserName" id="UserName" class="form-control"/>
+							</div>
+							
+							<div class="col-md-12 mb-3">
+								<label for="Text" class="form-label">Yorum</label>
+								<input type="text" name="text" id="text" rows="3" class="form-control"/>
+							</div>
+
+							<div class="mb-3">
+								<button type="submit" class="btn btn-primary">Kaydet</button>
+							</div>
+
+						</form>
+					</div>
+
 				</div>
 			</div>
 		</div>
