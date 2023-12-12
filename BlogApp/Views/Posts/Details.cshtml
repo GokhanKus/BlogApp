@@ -26,11 +26,11 @@
 						<div class="my-4 d-flex">
 							<img src="/img/@comment.User.Image" alt="" class="avatar rounded-circle float-start me-3" />
 							<div>
-								<div class="mb-2">
-									<h6>@comment.User.UserName</h6>
-									<span>@comment.CreatedTime</span>
-									<p>@comment.Text</p>
+								<div class="mb-2 d-flex">@*d-flex diyerek ayni div altindaki etiketleri yan yana getirirsin etiket ismi farketmez*@
+									<h6 class="me-2">@comment.User.UserName</h6>
+									<small>@comment.CreatedTime.ToString("g")</small> @*gün ay yıl saat dakika bilgileri icin "g"*@
 								</div>
+									<p>@comment.Text</p>
 							</div>
 						</div>
 					}
@@ -39,6 +39,7 @@
 						<h4>Yorum Ekle</h4>
 						<form asp-action="AddComment" method="post">
 							<input type="hidden" value="@Model.Id" name="postId"/>
+							<input type="hidden" value="@Model.Url" name="url"/>
 
 							<div class="col-md-12">
 								<label for="UserName" class="form-label">UserName</label>

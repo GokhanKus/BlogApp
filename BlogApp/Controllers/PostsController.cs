@@ -1,6 +1,7 @@
 ﻿using BlogApp.Models;
 using BUSINESS.Abstract;
 using DAL.Context;
+using DATA.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,10 +20,12 @@ namespace BlogApp.Controllers
 		#endregion
 
 		private readonly IPostRepository _postRepository;
+		private readonly ICommentRepository _commentRepository;
 		//private readonly ITagRepository _tagRepository; 
-		public PostsController(IPostRepository postRepository)
+		public PostsController(IPostRepository postRepository, ICommentRepository commentRepository)
 		{
 			_postRepository = postRepository;
+			_commentRepository = commentRepository;
 		}
 		public async Task<IActionResult> Index(string tag)
 		{
@@ -55,9 +58,19 @@ namespace BlogApp.Controllers
 				.FirstOrDefaultAsync(p => p.Url == url);
 			return View(model);
 		}
-		public IActionResult AddComment(string postId, string UserName, string text)
+		public IActionResult AddComment(int postId, string UserName, string text, string url)
 		{
-			return View();
+			var comment = new Comment
+			{
+				Text = text,
+				CreatedTime = DateTime.Now,
+				PostId = postId,
+				User = new User { UserName = UserName, Image = "avatar.jpg" }
+			};
+			_commentRepository.CreateComment(comment);
+
+			return Redirect("/posts/details/" + url); //2side calisir.
+			//return RedirectToRoute("post_details", new { url = url });
 		}
 	}
 }

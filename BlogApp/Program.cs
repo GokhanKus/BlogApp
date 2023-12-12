@@ -30,6 +30,7 @@ namespace BlogApp
 
 			builder.Services.AddScoped<IPostRepository, PostRepository>();
 			builder.Services.AddScoped<ITagRepository, TagRepository>();
+			builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 			#endregion
 
