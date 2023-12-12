@@ -17,20 +17,20 @@ namespace BlogApp.Controllers
 		//	_context = context;
 		//}
 		#endregion
-		
+
 		private readonly IPostRepository _postRepository;
 		//private readonly ITagRepository _tagRepository; 
 		public PostsController(IPostRepository postRepository)
-        {
+		{
 			_postRepository = postRepository;
 		}
-        public async Task<IActionResult> Index(string tag)
+		public async Task<IActionResult> Index(string tag)
 		{
 			var posts = _postRepository.Posts;
 
 			if (!string.IsNullOrEmpty(tag))
 			{
-				posts = posts.Where(x=>x.Tags.Any(p=>p.Url == tag));
+				posts = posts.Where(x => x.Tags.Any(p => p.Url == tag));
 			}
 
 
@@ -49,8 +49,10 @@ namespace BlogApp.Controllers
 		{
 			var model = await _postRepository
 				.Posts
-				.Include(x=> x.Tags)
-				.FirstOrDefaultAsync(p=>p.Url == url);
+				.Include(t => t.Tags)
+				.Include(c => c.Comments)
+				.ThenInclude(u=>u.User) //then include diyerek commenttin icindeki yani commentten sonra usera gidelim dedik.
+				.FirstOrDefaultAsync(p => p.Url == url);
 			return View(model);
 		}
 	}

@@ -29,7 +29,7 @@ namespace DAL.DataSeeding
 				{
 					context.Tags.AddRange(
 						new Tag { Text = "Web Programlama", Url = "web-programlama", Color = TagColors.info },
-						new Tag { Text = "Front End", Url = "front-end", Color = TagColors. primary},
+						new Tag { Text = "Front End", Url = "front-end", Color = TagColors.primary },
 						new Tag { Text = "Back End", Url = "back-end", Color = TagColors.warning },
 						new Tag { Text = "Unity", Url = "unity", Color = TagColors.success },
 						new Tag { Text = "Unreal Engine", Url = "unreal-engine", Color = TagColors.danger },
@@ -42,8 +42,8 @@ namespace DAL.DataSeeding
 				if (!context.Users.Any())//dbde users tablosunda hic kayit yoksa;
 				{
 					context.Users.AddRange(
-						new User { UserName = "GokhanKus", CreatedTime = DateTime.Now },
-						new User { UserName = "AhmetYilmaz", CreatedTime = DateTime.Now.AddDays(-10) } //10 gun once kayit olmus olsun 
+						new User { UserName = "GokhanKus", Image = "p1.png", CreatedTime = DateTime.Now },
+						new User { UserName = "AhmetYilmaz", Image = "p2.jpg", CreatedTime = DateTime.Now.AddDays(-10) } //10 gun once kayit olmus olsun 
 					);
 					context.SaveChanges();
 				}
@@ -59,6 +59,9 @@ namespace DAL.DataSeeding
 							Image = "1.jpg",
 							CreatedTime = DateTime.Now.AddDays(-15), //15 gun once kayit edilmis olsun
 							Tags = context.Tags.Take(3).ToList(), //bu post dbdeki tags tablosunun ilk 3 tage sahip olsun
+							Comments = new List<Comment> {
+								 new Comment { Text = "guzel bir kurs", CreatedTime = DateTime.Now.AddHours(-10), UserId = 1 },
+								 new Comment { Text = "bu kurstan cok faydalandim", CreatedTime = DateTime.Now, UserId = 2 } },
 							UserId = 1
 						},
 						new Post
