@@ -54,26 +54,53 @@ namespace BlogApp.Controllers
 				.Posts
 				.Include(t => t.Tags)
 				.Include(c => c.Comments)
-				.ThenInclude(u=>u.User) //then include diyerek commenttin icindeki yani commentten sonra usera gidelim dedik.
+				.ThenInclude(u => u.User) //then include diyerek commenttin icindeki yani commentten sonra usera gidelim dedik.
 				.FirstOrDefaultAsync(p => p.Url == url);
 			return View(model);
 		}
-		public IActionResult AddComment(int postId, string UserName, string text, string url)
+		#region Ajax'dan once
+		//public IActionResult AddComment(int postId, string userName, string text, string url)
+		//{
+		//	var comment = new Comment
+		//	{
+		//		Text = text,
+		//		CreatedTime = DateTime.Now,
+		//		PostId = postId,
+		//		User = new User { UserName = userName, Image = "avatar.jpg" }
+		//	};
+		//	_commentRepository.CreateComment(comment);
+
+		//	return Redirect("/posts/details/" + url); //2side calisir.
+		//	//return RedirectToRoute("post_details", new { url = url });
+		//}
+		#endregion
+
+
+		#region Ajax'li kullanim
+		[HttpPost]
+		public JsonResult AddComment(int postId, string userName, string text)
 		{
 			var comment = new Comment
 			{
 				Text = text,
 				CreatedTime = DateTime.Now,
 				PostId = postId,
-				User = new User { UserName = UserName, Image = "avatar.jpg" }
+				User = new User { UserName = userName, Image = "avatar.jpg" }
 			};
 			_commentRepository.CreateComment(comment);
 
-			return Redirect("/posts/details/" + url); //2side calisir.
-			//return RedirectToRoute("post_details", new { url = url });
+			return Json(new
+			{
+				userName,
+				text,
+				comment.CreatedTime,
+				comment.User.Image
+			});
 		}
+		#endregion
+
 	}
 }
 /*
- Partial view bir controller tetiklemek zorunda, ama viewcomponent tek tabanccadır kendi componenti vardır kendi kendine çalışır.
+ Partial view bir controller tetiklemek zorunda ve calısmazsa hata fırlatır, ama viewcomponent tek tabanccadır kendi componenti vardır kendi kendine çalışır. calısmazsa hata vermez
  */

@@ -38,12 +38,12 @@
 					<div>
 						<h4>Yorum Ekle</h4>
 						<form asp-action="AddComment" method="post">
-							<input type="hidden" value="@Model.Id" name="postId"/>
+							<input type="hidden" value="@Model.Id" id="PostId" name="postId"/>
 							<input type="hidden" value="@Model.Url" name="url"/>
 
 							<div class="col-md-12">
 								<label for="UserName" class="form-label">UserName</label>
-								<input type="text" name="UserName" id="UserName" class="form-control"/>
+								<input type="text" name="userName" id="UserName" class="form-control"/>
 							</div>
 							
 							<div class="col-md-12 mb-3">
@@ -52,7 +52,7 @@
 							</div>
 
 							<div class="mb-3">
-								<button type="submit" class="btn btn-primary">Kaydet</button>
+								<button id="btnYorumKayit" type="submit" class="btn btn-primary">Kaydet</button>
 							</div>
 
 						</form>
@@ -77,3 +77,29 @@
 	</div>
 
 </div>
+
+@section Scripts{
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> @*jquery cdn minified*@
+	<script type="text/javascript">
+		$(document).ready(function () { //burası sayfadaki butun bilesenler yuklensin ondan sonra js kodları calıssın demek, ki zaten js sayfa uzerinde yuklenen bilesenlere ihtiyac duyar
+
+			$("#btnYorumKayit").click(function () {
+				$.ajax({
+					type: 'post',
+					url: '@Url.Action("AddComment")',
+					dataType: 'json',
+					data: {
+						postId: $('#PostId').val(),
+						userName: $('#UserName').val(), //sol taraftakiler controllerdaki parametre, sagdakiler input etiketindeki id isimleri
+						text: $('#text').val(),
+					},
+					success: function (yorum) {
+						console.log(yorum)
+					}
+				});
+				return false;
+			});
+
+		});
+	</script>
+}
