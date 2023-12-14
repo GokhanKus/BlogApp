@@ -18,37 +18,41 @@
 		<div class="bg-white mt-3">
 			<div class="card border-0">
 				<div class="card-header pb-0">
-					<h4>@Model.Comments.Count() adet yorum var</h4>
+					<h4><span id="commentCount">@Model.Comments.Count() </span> adet yorum var</h4>
 				</div>
 				<div class="card-body">
-					@foreach (var comment in Model.Comments)
-					{
-						<div class="my-4 d-flex">
-							<img src="/img/@comment.User.Image" alt="" class="avatar rounded-circle float-start me-3" />
-							<div>
-								<div class="mb-2 d-flex">@*d-flex diyerek ayni div altindaki etiketleri yan yana getirirsin etiket ismi farketmez*@
-									<h6 class="me-2">@comment.User.UserName</h6>
-									<small>@comment.CreatedTime.ToString("g")</small> @*gün ay yıl saat dakika bilgileri icin "g"*@
-								</div>
+					<div id="comments">
+						@*asagidaki ajax requesti ile iliskilendirildi*@
+						@foreach (var comment in Model.Comments)
+						{
+							<div class="my-4 d-flex">
+								<img src="/img/@comment.User.Image" alt="" class="avatar rounded-circle float-start me-3" />
+								<div>
+									<div class="mb-2 d-flex">
+										@*d-flex diyerek ayni div altindaki etiketleri yan yana getirirsin etiket ismi farketmez*@
+										<h6 class="me-2">@comment.User.UserName</h6>
+										<small>@comment.CreatedTime.ToString("g")</small> @*gün ay yıl saat dakika bilgileri icin "g"*@
+									</div>
 									<p>@comment.Text</p>
+								</div>
 							</div>
-						</div>
-					}
-					<hr class="my-4"/>
+						}
+					</div>
+					<hr class="my-4" />
 					<div>
 						<h4>Yorum Ekle</h4>
 						<form asp-action="AddComment" method="post">
-							<input type="hidden" value="@Model.Id" id="PostId" name="postId"/>
-							<input type="hidden" value="@Model.Url" name="url"/>
+							<input type="hidden" value="@Model.Id" id="PostId" name="postId" />
+							@* <input type="hidden" value="@Model.Url" name="url"/> *@
 
 							<div class="col-md-12">
 								<label for="UserName" class="form-label">UserName</label>
-								<input type="text" name="userName" id="UserName" class="form-control"/>
+								<input type="text" name="userName" id="UserName" class="form-control" />
 							</div>
-							
+
 							<div class="col-md-12 mb-3">
 								<label for="Text" class="form-label">Yorum</label>
-								<input type="text" name="text" id="text" rows="3" class="form-control"/>
+								<input type="text" name="text" id="text" rows="3" class="form-control" />
 							</div>
 
 							<div class="mb-3">
@@ -78,7 +82,7 @@
 
 </div>
 
-@section Scripts{
+@section Scripts {
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> @*jquery cdn minified*@
 	<script type="text/javascript">
 		$(document).ready(function () { //burası sayfadaki butun bilesenler yuklensin ondan sonra js kodları calıssın demek, ki zaten js sayfa uzerinde yuklenen bilesenlere ihtiyac duyar
@@ -92,9 +96,26 @@
 						postId: $('#PostId').val(),
 						userName: $('#UserName').val(), //sol taraftakiler controllerdaki parametre, sagdakiler input etiketindeki id isimleri
 						text: $('#text').val(),
-					},
+					},//append var olan kayitlarin sonuna eklemek icin kullanilir
 					success: function (yorum) {
-						console.log(yorum)
+						var date = new Date(yorum.createdTime);
+						$("#comments").append(`
+										<div class="my-4 d-flex">
+												<img src="/img/${yorum.image}" alt="" class="avatar rounded-circle float-start me-3" />
+												<div>
+													<div class="mb-2 d-flex">
+																<h6 class="me-2">${yorum.userName}</h6>
+																<small>${date.toLocaleDateString()}</small>
+													</div>
+															<p>${yorum.text}</p>
+												</div>
+											</div>
+								`);
+						$("#UserName").val('');
+						$("#text").val('');
+
+						var adet = parseInt($("#commentCount").text()); //yorum yapildigi an countta guncellensin, sayfanın yenilenmesine gerek kalmadan guncellensin
+						$("#commentCount").text(adet + 1);
 					}
 				});
 				return false;
