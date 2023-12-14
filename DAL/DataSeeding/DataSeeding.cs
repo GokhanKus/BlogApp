@@ -42,8 +42,8 @@ namespace DAL.DataSeeding
 				if (!context.Users.Any())//dbde users tablosunda hic kayit yoksa;
 				{
 					context.Users.AddRange(
-						new User { UserName = "GokhanKus", Image = "p1.png", CreatedTime = DateTime.Now },
-						new User { UserName = "AhmetYilmaz", Image = "p2.jpg", CreatedTime = DateTime.Now.AddDays(-10) } //10 gun once kayit olmus olsun 
+						new User { UserName = "GokhanKus", Name="Gokhan Kus",Email="info@gokhankus.com",Password="123456", Image = "p1.png", CreatedTime = DateTime.Now },
+						new User { UserName = "RagnarOktay", Name = "Ragnar Oktay", Email = "info@ragnaroktay.com", Password = "123456", Image = "p2.jpg", CreatedTime = DateTime.Now.AddDays(-10) } //10 gun once kayit olmus olsun 
 					);
 					context.SaveChanges();
 				}
