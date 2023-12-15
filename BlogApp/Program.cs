@@ -2,6 +2,7 @@ using BUSINESS.Abstract;
 using BUSINESS.Concrete;
 using DAL.Context;
 using DAL.DataSeeding;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp
@@ -31,8 +32,11 @@ namespace BlogApp
 			builder.Services.AddScoped<IPostRepository, PostRepository>();
 			builder.Services.AddScoped<ITagRepository, TagRepository>();
 			builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+			builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 			#endregion
+
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 			var app = builder.Build();
 
@@ -49,7 +53,9 @@ namespace BlogApp
 			}
 
 			app.UseStaticFiles();
+
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 
