@@ -18,6 +18,10 @@ namespace BlogApp.Controllers
 		}
 		public IActionResult Login()
 		{
+			if (User.Identity!.IsAuthenticated) // kullanici giris yaptiysa login sayfasina erisemesin "!" diyerek null olmadigini belirtiyoruz
+			{
+				return RedirectToAction("Index", "Posts");
+			}
 			return View();
 		}
 		[HttpPost]
@@ -62,5 +66,12 @@ namespace BlogApp.Controllers
 			}
 				return View(model);
 		}
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); //logouttan sonra browser uzerindeki cookieyi siler
+			return RedirectToAction("Login", "Users");
+		}
 	}
 }
+//authorization  :kısıtlamalar icin kullanılır sitenin belirli partlarına belirli rollerdeki kisilerin girebilmesi..
+//authentication :uygulamaya giris yapmak, kimlik dogrulaması gibi islemler	
