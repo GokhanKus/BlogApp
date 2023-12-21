@@ -38,6 +38,7 @@ namespace BlogApp.Controllers
 					userClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 					userClaims.Add(new Claim(ClaimTypes.Name, user.UserName ?? ""));
 					userClaims.Add(new Claim(ClaimTypes.GivenName, user.Name ?? ""));
+					userClaims.Add(new Claim(ClaimTypes.UserData, user.Image ?? "")); //image bilgisi
 
 					if (user.Email == "info@gokhankus.com")
 					{

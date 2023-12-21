@@ -4,6 +4,8 @@ using DAL.Context;
 using DATA.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using System.Security.Claims;
 
 namespace BlogApp.Controllers
 {
@@ -79,14 +81,19 @@ namespace BlogApp.Controllers
 
 		#region Ajax'li kullanim
 		[HttpPost]
-		public JsonResult AddComment(int postId, string userName, string text)
+		public JsonResult AddComment(int postId, string text)
 		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //userid bilgisini aldik
+			var userName = User.FindFirstValue(ClaimTypes.Name);		 //username bilgisini aldik 
+			var avatar = User.FindFirstValue(ClaimTypes.UserData);			 //userin image bilgisi
+
+
 			var comment = new Comment
 			{
+				PostId = postId,
 				Text = text,
 				CreatedTime = DateTime.Now,
-				PostId = postId,
-				User = new User { UserName = userName, Image = "avatar.jpg" }
+				UserId = int.Parse(userId??"")
 			};
 			_commentRepository.CreateComment(comment);
 
@@ -95,7 +102,7 @@ namespace BlogApp.Controllers
 				userName,
 				text,
 				comment.CreatedTime,
-				comment.User.Image
+				avatar
 			});
 		}
 		#endregion
