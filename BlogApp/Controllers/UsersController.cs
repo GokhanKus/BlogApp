@@ -1,8 +1,10 @@
 ﻿using BlogApp.Models;
 using BUSINESS.Abstract;
+using DATA.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
 using System.Security.Claims;
 
@@ -15,6 +17,35 @@ namespace BlogApp.Controllers
 		public UsersController(IUserRepository userRepository)
 		{
 			_userRepository = userRepository;
+		}
+		public IActionResult Register()
+		{
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> Register(RegisterViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userRepository.Users.FirstOrDefaultAsync(i => i.UserName == model.UserName || i.Email == model.Email);
+				if (user == null)
+				{
+					_userRepository.CreateUser(new User
+					{
+						Email = model.Email,
+						Name = model.Name,
+						UserName = model.UserName,
+						Password = model.Password,
+						Image = "avatar.jpg"
+					});
+					return RedirectToAction("Login", "users");
+				}
+				else
+				{
+					ModelState.AddModelError("", "email, ya da username kullanimda");
+				}
+			}
+			return View(model);
 		}
 		public IActionResult Login()
 		{
@@ -33,7 +64,7 @@ namespace BlogApp.Controllers
 
 				if (user != null)
 				{
-					var userClaims=new List<Claim>();
+					var userClaims = new List<Claim>();
 
 					userClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 					userClaims.Add(new Claim(ClaimTypes.Name, user.UserName ?? ""));
@@ -65,7 +96,7 @@ namespace BlogApp.Controllers
 					ModelState.AddModelError("", "kullanici adi veya sifre yanlis");
 				}
 			}
-				return View(model);
+			return View(model);
 		}
 		public async Task<IActionResult> Logout()
 		{
