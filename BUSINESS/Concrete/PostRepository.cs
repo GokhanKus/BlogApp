@@ -24,9 +24,5 @@ namespace BUSINESS.Concrete
 			_context.Posts.Add(post);
 			_context.SaveChanges();
 		}
-
-
-		
-
 	}
 }
