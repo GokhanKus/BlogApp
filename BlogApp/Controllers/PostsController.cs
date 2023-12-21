@@ -84,8 +84,8 @@ namespace BlogApp.Controllers
 		public JsonResult AddComment(int postId, string text)
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //userid bilgisini aldik
-			var userName = User.FindFirstValue(ClaimTypes.Name);         //username bilgisini aldik 
-			var avatar = User.FindFirstValue(ClaimTypes.UserData);           //userin image bilgisi
+			var userName = User.FindFirstValue(ClaimTypes.Name);		 //username bilgisini aldik 
+			var avatar = User.FindFirstValue(ClaimTypes.UserData);			 //userin image bilgisi
 
 
 			var comment = new Comment
@@ -93,7 +93,7 @@ namespace BlogApp.Controllers
 				PostId = postId,
 				Text = text,
 				CreatedTime = DateTime.Now,
-				UserId = int.Parse(userId ?? "")
+				UserId = int.Parse(userId??"")
 			};
 			_commentRepository.CreateComment(comment);
 
@@ -107,31 +107,6 @@ namespace BlogApp.Controllers
 		}
 		#endregion
 
-		public IActionResult CreatePost()
-		{
-			return View();
-		}
-		[HttpPost]
-		public IActionResult CreatePost(PostCreateViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-				_postRepository.CreatePost(new Post
-				{
-					Title = model.Title,
-					Content = model.Content,
-					Url = model.Url,
-					UserId = int.Parse(userId ?? ""),
-					CreatedTime = DateTime.Now,
-					Image = "blog.jpg",
-					IsActive = false, //post eklenir eklenmez aktif olmasini istemiyorum
-				});
-				return RedirectToAction("Index");
-			}
-			return View(model);
-		}
 	}
 }
 /*
