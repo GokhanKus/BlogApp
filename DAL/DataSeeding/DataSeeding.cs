@@ -54,6 +54,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Asp.net Core",
 							Content = "AspNET core dersleri",
+							Description = "AspNET core dersleri",
 							Url = "aspnet-core",
 							IsActive = true,
 							Image = "1.jpg",
@@ -68,6 +69,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "PHP",
 							Content = "PHP dersleri",
+							Description = "PHP dersleri",
 							Url = "php",
 							IsActive = true,
 							Image = "2.jpg",
@@ -79,6 +81,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Unreal Engine",
 							Content = "Unreal Engine dersleri",
+							Description = "Unreal Engine dersleri",
 							Url = "unreal-engine",
 							IsActive = true,
 							Image = "3.jpg",
@@ -90,6 +93,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "React",
 							Content = "React dersleri",
+							Description = "React dersleri",
 							Url = "react",
 							IsActive = true,
 							Image = "3.jpg",
@@ -101,6 +105,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Django",
 							Content = "Django dersleri",
+							Description = "Django dersleri",
 							Url = "Django",
 							IsActive = true,
 							Image = "3.jpg",
@@ -112,6 +117,7 @@ namespace DAL.DataSeeding
 						{
 							Title = "Angular",
 							Content = "Angular dersleri",
+							Description = "Angular dersleri",
 							Url = "angular",
 							IsActive = true,
 							Image = "3.jpg",

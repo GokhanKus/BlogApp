@@ -11,7 +11,7 @@
 				}
 			</div>
 			<img src="~/img/@Model.Image" class="img-fluid rounded" alt="" />
-			<div>@Model.Content</div>
+			<div>@Html.Raw(@Model.Content)</div> @*html.raw, html etiketlerini yorumlayıp sayfa uzerinde o sekide gosterir yani etiketleri gostermez artık.*@
 
 		</div>
 
