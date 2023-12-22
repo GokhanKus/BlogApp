@@ -59,6 +59,9 @@ namespace DAL.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
