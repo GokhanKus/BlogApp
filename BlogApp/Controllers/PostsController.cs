@@ -2,6 +2,7 @@
 using BUSINESS.Abstract;
 using DAL.Context;
 using DATA.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
@@ -83,7 +84,7 @@ namespace BlogApp.Controllers
 		[HttpPost]
 		public JsonResult AddComment(int postId, string text)
 		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); //userid bilgisini aldik
+			var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); //userid bilgisini aldik
 			var userName = User.FindFirstValue(ClaimTypes.Name);         //username bilgisini aldik 
 			var avatar = User.FindFirstValue(ClaimTypes.UserData);           //userin image bilgisi
 
@@ -93,7 +94,7 @@ namespace BlogApp.Controllers
 				PostId = postId,
 				Text = text,
 				CreatedTime = DateTime.Now,
-				UserId = int.Parse(userId ?? "")
+				UserId = userId
 			};
 			_commentRepository.CreateComment(comment);
 
@@ -106,12 +107,14 @@ namespace BlogApp.Controllers
 			});
 		}
 		#endregion
-
+		[Authorize]//login yapmayan user bu sayfaya giremesin, url kısmına posts/createpost yazınca default olarak account altına atıyor bunu degistirelim. program.cste
 		public IActionResult CreatePost()
 		{
 			return View();
 		}
+
 		[HttpPost]
+		[Authorize]
 		public IActionResult CreatePost(PostCreateViewModel model)
 		{
 			if (ModelState.IsValid)
@@ -131,6 +134,20 @@ namespace BlogApp.Controllers
 				return RedirectToAction("Index");
 			}
 			return View(model);
+		}
+		public async Task<IActionResult> List()
+		{
+			var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "");
+			var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+			var posts = _postRepository.Posts;
+
+			if (string.IsNullOrEmpty(userRole))
+			{
+				posts = posts.Where(i => i.UserId == userId); //user eger any bir role sahip degilse sadece kendi postlarını gorebilsin
+			}
+
+			return View(await posts.ToListAsync());
 		}
 	}
 }
