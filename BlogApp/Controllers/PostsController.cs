@@ -1,5 +1,6 @@
 ﻿using BlogApp.Models;
 using BUSINESS.Abstract;
+using BUSINESS.Concrete;
 using DAL.Context;
 using DATA.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +34,7 @@ namespace BlogApp.Controllers
 		public async Task<IActionResult> Index(string tag)
 		{
 			var claims = User.Claims;
-			var posts = _postRepository.Posts;
+			var posts = _postRepository.Posts.Where(i => i.IsActive); //aktif olan postlar gelsin
 
 			if (!string.IsNullOrEmpty(tag))
 			{
@@ -148,6 +149,52 @@ namespace BlogApp.Controllers
 			}
 
 			return View(await posts.ToListAsync());
+		}
+
+		public IActionResult EditPost(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var post = _postRepository.Posts.FirstOrDefault(i => i.Id == id);
+			if (post == null)
+			{
+				return NotFound();
+			}
+			var entity = new PostCreateViewModel
+			{
+				Title = post.Title,
+				Content = post.Content,
+				Description = post.Description,
+				IsActive = post.IsActive,
+				Url = post.Url,
+				PostId = post.Id,
+			};
+			return View(entity);
+		}
+		[Authorize]
+		[HttpPost]
+		public IActionResult EditPost(PostCreateViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var entityToUpdate = new Post
+				{
+					Id = model.PostId,
+					Title = model.Title,
+					Description = model.Description,
+					Content = model.Content,
+					Url = model.Url,
+				};
+				if (User.FindFirstValue(ClaimTypes.Role) == "admin")
+				{
+					entityToUpdate.IsActive = model.IsActive; //postu editleyen kisi admin ise postu aktif etme yetkisine sahip olsun
+				}
+				_postRepository.EditPostAsync(entityToUpdate);
+				return RedirectToAction("List");
+			}
+			return View(model);
 		}
 	}
 }

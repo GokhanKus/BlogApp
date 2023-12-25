@@ -1,6 +1,7 @@
 ﻿using BUSINESS.Abstract;
 using DAL.Context;
 using DATA.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,21 @@ namespace BUSINESS.Concrete
 		{
 			_context.Posts.Add(post);
 			_context.SaveChanges();
+		}
+
+		public async Task EditPostAsync(Post post) 
+		{
+			var entity = await _context.Posts.FirstOrDefaultAsync(i => i.Id == post.Id);
+			if (entity != null)
+			{
+				entity.Title = post.Title;
+				entity.Description = post.Description;
+				entity.Content = post.Content;
+				entity.Url = post.Url;
+				entity.IsActive = post.IsActive;
+
+				await _context.SaveChangesAsync();
+			}
 		}
 	}
 }

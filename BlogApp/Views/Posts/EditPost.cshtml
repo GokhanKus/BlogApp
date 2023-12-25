@@ -1,0 +1,60 @@
+﻿@model PostCreateViewModel
+
+<div class="row">
+	<div class="col-12">
+		<div class="bg-white p-4">
+
+			<h1>Post Edit</h1>
+			<form asp-action="EditPost" asp-controller="Posts" method="post">
+
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<input type="hidden" asp-for="PostId" />
+				<div class="mb-3 form-floating">
+					<input asp-for="Title" class="form-control" placeholder="Title" />
+					<label asp-for="Title"></label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<input asp-for="Description" class="form-control" placeholder="Description" />
+					<label asp-for="Description"></label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<textarea asp-for="Content" class="form-control" placeholder="Content"></textarea>
+					<label asp-for="Content"></label>
+				</div>
+
+				<div class="mb-3 form-floating">
+					<input asp-for="Url" class="form-control" placeholder="Url" />
+					<label asp-for="Url"></label>
+				</div>
+
+				@if (User.FindFirstValue(ClaimTypes.Role) == "admin") //postu editleyecek kisi admin ise checkbox ekrana gelsin
+				{
+					<div class="form-group">
+
+						<input asp-for="IsActive" class="form-check-input" />
+						<label asp-for="IsActive" class="form-check-label"></label>
+					</div>
+				}
+
+				<button type="submit" class="btn btn-primary">Edit Post</button>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"
+			integrity="sha512-6JR4bbn8rCKvrkdoTJd/VFyXAN4CE9XMtgykPWgKiHjou56YDJxWsi90hAeMTYxNwUnKSQu9JPc3SQUg+aGCHw=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script>
+		tinymce.init({
+			selector: "#Content" //bu sekilde content textareasını html editoru yaptik
+		});
+	</script>
+
+}
