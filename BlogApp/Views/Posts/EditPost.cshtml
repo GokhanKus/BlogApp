@@ -1,7 +1,7 @@
 ﻿@model PostCreateViewModel
 
 <div class="row">
-	<div class="col-12">
+	<div class="col-9">
 		<div class="bg-white p-4">
 
 			<h1>Post Edit</h1>
@@ -43,6 +43,23 @@
 			</form>
 		</div>
 	</div>
+
+	<div class="col-3 p-2">
+		<div class="bg-white p-4">
+			@foreach (var tag in ViewBag.Tags)
+			{
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" value="" id="tag_@tag.Id"
+						@(Model.Tags.Any(i => i.Id == tag.Id) ? "checked" : "")
+					>
+					<label class="form-check-label" for="tag_@tag.fId">
+						@tag.Text
+					</label>
+				</div>
+			}
+		</div>
+	</div>
+
 </div>
 
 @section Scripts {
