@@ -25,11 +25,13 @@ namespace BlogApp.Controllers
 
 		private readonly IPostRepository _postRepository;
 		private readonly ICommentRepository _commentRepository;
+		private readonly ITagRepository _tagRepository;
 		//private readonly ITagRepository _tagRepository; 
-		public PostsController(IPostRepository postRepository, ICommentRepository commentRepository)
+		public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, ITagRepository tagRepository)
 		{
 			_postRepository = postRepository;
 			_commentRepository = commentRepository;
+			_tagRepository = tagRepository;
 		}
 		public async Task<IActionResult> Index(string tag)
 		{
@@ -152,17 +154,23 @@ namespace BlogApp.Controllers
 			return View(await posts.ToListAsync());
 		}
 
+		[Authorize]
 		public IActionResult EditPost(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
-			var post = _postRepository.Posts.FirstOrDefault(i => i.Id == id);
+			var post = _postRepository.Posts
+				.Include(t=>t.Tags)
+				.FirstOrDefault(i => i.Id == id);
 			if (post == null)
 			{
 				return NotFound();
 			}
+
+			ViewBag.Tags = _tagRepository.Tags.ToList();
+
 			var entity = new PostCreateViewModel
 			{
 				Title = post.Title,
@@ -171,6 +179,7 @@ namespace BlogApp.Controllers
 				IsActive = post.IsActive,
 				Url = post.Url,
 				PostId = post.Id,
+				Tags = post.Tags
 			};
 			return View(entity);
 		}
