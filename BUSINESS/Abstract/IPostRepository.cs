@@ -11,7 +11,7 @@ namespace BUSINESS.Abstract
 	{
 		IQueryable<Post> Posts { get; }
 		public void CreatePost(Post post);
-		public Task EditPostAsync(Post post);
+		public Task EditPostAsync(Post post, int[]tagIds);
 		
 	}
 }

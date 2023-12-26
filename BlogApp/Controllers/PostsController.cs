@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using System.Collections.Immutable;
 using System.Security.Claims;
 
 namespace BlogApp.Controllers
@@ -161,7 +162,7 @@ namespace BlogApp.Controllers
 				return NotFound();
 			}
 			var post = _postRepository.Posts
-				.Include(t=>t.Tags)
+				.Include(t => t.Tags)
 				.FirstOrDefault(i => i.Id == id);
 			if (post == null)
 			{
@@ -184,7 +185,7 @@ namespace BlogApp.Controllers
 		}
 		[Authorize]
 		[HttpPost]
-		public IActionResult EditPost(PostCreateViewModel model)
+		public IActionResult EditPost(PostCreateViewModel model, int[] tagIds)
 		{
 			if (ModelState.IsValid)
 			{
@@ -200,9 +201,10 @@ namespace BlogApp.Controllers
 				{
 					entityToUpdate.IsActive = model.IsActive; //postu editleyen kisi admin ise postu aktif etme yetkisine sahip olsun
 				}
-				_postRepository.EditPostAsync(entityToUpdate);
+				_postRepository.EditPostAsync(entityToUpdate,tagIds);
 				return RedirectToAction("List");
 			}
+			ViewBag.Tags = _tagRepository.Tags.ToList();	
 			return View(model);
 		}
 	}
