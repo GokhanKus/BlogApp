@@ -57,9 +57,10 @@ namespace BlogApp.Controllers
 		{
 			var model = await _postRepository
 				.Posts
+				.Include(u=>u.User) //buradaki user postu atan user
 				.Include(t => t.Tags)
 				.Include(c => c.Comments)
-				.ThenInclude(u => u.User) //then include diyerek commenttin icindeki yani commentten sonra usera gidelim dedik.
+				.ThenInclude(u => u.User) //buradaki user yorumu atan user, then include diyerek commenttin icindeki yani commentten sonra usera gidelim dedik. 
 				.FirstOrDefaultAsync(p => p.Url == url);
 			return View(model);
 		}

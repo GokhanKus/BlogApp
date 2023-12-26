@@ -72,9 +72,13 @@ namespace BlogApp
 				defaults: new { controller = "Posts", action = "Index" });
 
 			app.MapControllerRoute(
+				name: "user_profile",
+				pattern: "Users/Profile/{username}",
+				defaults: new { controller = "Users", action = "Profile" });
+
+			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
-
 			//app.MapDefaultControllerRoute();
 
 			app.Run();

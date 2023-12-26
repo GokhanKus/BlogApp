@@ -103,6 +103,23 @@ namespace BlogApp.Controllers
 			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); //logouttan sonra browser uzerindeki cookieyi siler
 			return RedirectToAction("Login", "Users");
 		}
+		public IActionResult Profile(string username)
+		{
+			if (string.IsNullOrEmpty(username))
+			{
+				return NotFound(); //username bulunamadiysa 404 gonderelim
+			}
+			var user = _userRepository.Users
+				.Include(p => p.Posts) //user'a ait olan postlar
+				.Include(c => c.Comments)
+				.ThenInclude(p => p.Post) //yapılan yorumun hangi posta ait oldugu 
+				.FirstOrDefault(u => u.UserName == username);
+			if (user == null)
+			{
+				return NotFound();
+			}
+			return View(user);
+		}
 	}
 }
 //authorization  :kısıtlamalar icin kullanılır sitenin belirli partlarına belirli rollerdeki kisilerin girebilmesi..
