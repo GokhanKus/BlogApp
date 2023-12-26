@@ -26,9 +26,24 @@ namespace BUSINESS.Concrete
 			_context.SaveChanges();
 		}
 
-		public async Task EditPostAsync(Post post) 
+		//public async Task EditPostAsync(Post post)
+		//{
+		//	var entity = await _context.Posts.FirstOrDefaultAsync(i => i.Id == post.Id);
+		//	if (entity != null)
+		//	{
+		//		entity.Title = post.Title;
+		//		entity.Description = post.Description;
+		//		entity.Content = post.Content;
+		//		entity.Url = post.Url;
+		//		entity.IsActive = post.IsActive;
+
+		//		await _context.SaveChangesAsync();
+		//	}
+		//}
+
+		public async Task EditPostAsync(Post post, int[] tagIds)
 		{
-			var entity = await _context.Posts.FirstOrDefaultAsync(i => i.Id == post.Id);
+			var entity = await _context.Posts.Include(t => t.Tags).FirstOrDefaultAsync(i => i.Id == post.Id);
 			if (entity != null)
 			{
 				entity.Title = post.Title;
@@ -37,6 +52,7 @@ namespace BUSINESS.Concrete
 				entity.Url = post.Url;
 				entity.IsActive = post.IsActive;
 
+				entity.Tags = await _context.Tags.Where(tag => tagIds.Contains(tag.Id)).ToListAsync();
 				await _context.SaveChangesAsync();
 			}
 		}
