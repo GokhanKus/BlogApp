@@ -24,6 +24,8 @@ namespace BlogApp
 
 			#endregion
 
+			builder.Services.AddAutoMapper(typeof(Program));    //BlogApp=>MappingProfile.cs
+
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
@@ -36,9 +38,10 @@ namespace BlogApp
 
 			#endregion
 
-			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=>
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 			options.LoginPath = "/Users/Login"
 			);
+
 
 			var app = builder.Build();
 

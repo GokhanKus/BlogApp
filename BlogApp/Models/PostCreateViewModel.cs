@@ -6,7 +6,7 @@ namespace BlogApp.Models
 {
 	public class PostCreateViewModel
 	{
-        public int PostId { get; set; }
+        public int Id { get; set; }
 
         [Required]
 		[Display(Name = "Baslik")]

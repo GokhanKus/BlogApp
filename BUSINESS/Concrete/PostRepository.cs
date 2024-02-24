@@ -1,10 +1,12 @@
-﻿using BUSINESS.Abstract;
+﻿using AutoMapper;
+using BUSINESS.Abstract;
 using DAL.Context;
 using DATA.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +15,11 @@ namespace BUSINESS.Concrete
 	public class PostRepository : IPostRepository
 	{
 		private readonly BlogContext _context;
-
-		public PostRepository(BlogContext context)
+		private readonly IMapper _mapper;
+		public PostRepository(BlogContext context, IMapper mapper)
 		{
 			_context = context;
+			_mapper = mapper;
 		}
 		public IQueryable<Post> Posts => _context.Posts;
 
