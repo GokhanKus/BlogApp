@@ -1,4 +1,5 @@
-﻿using BlogApp.Models;
+﻿using AutoMapper;
+using BlogApp.Models;
 using BUSINESS.Abstract;
 using BUSINESS.Concrete;
 using DAL.Context;
@@ -27,12 +28,14 @@ namespace BlogApp.Controllers
 		private readonly IPostRepository _postRepository;
 		private readonly ICommentRepository _commentRepository;
 		private readonly ITagRepository _tagRepository;
+		private readonly IMapper _mapper;
 		//private readonly ITagRepository _tagRepository; 
-		public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, ITagRepository tagRepository)
+		public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, ITagRepository tagRepository, IMapper mapper)
 		{
 			_postRepository = postRepository;
 			_commentRepository = commentRepository;
 			_tagRepository = tagRepository;
+			_mapper = mapper;
 		}
 		public async Task<IActionResult> Index(string tag)
 		{
@@ -126,16 +129,22 @@ namespace BlogApp.Controllers
 			{
 				var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-				_postRepository.CreatePost(new Post
-				{
-					Title = model.Title,
-					Content = model.Content,
-					Url = model.Url,
-					UserId = int.Parse(userId ?? ""),
-					CreatedTime = DateTime.Now,
-					Image = "blog.jpg",
-					IsActive = false, //post eklenir eklenmez aktif olmasini istemiyorum
-				});
+				var post = _mapper.Map<Post>(model);
+
+				post.UserId = int.Parse(userId ?? "");
+				post.CreatedTime = DateTime.Now;
+				post.Image = "blog.jpg";
+				_postRepository.CreatePost(post);
+				//_postRepository.CreatePost(new Post
+				//{
+				//	Title = model.Title,
+				//	Content = model.Content,
+				//	Url = model.Url,
+				//	UserId = int.Parse(userId ?? ""),
+				//	CreatedTime = DateTime.Now,
+				//	Image = "blog.jpg",
+				//	IsActive = false, //post eklenir eklenmez aktif olmasini istemiyorum
+				//});
 				return RedirectToAction("Index");
 			}
 			return View(model);
@@ -172,16 +181,18 @@ namespace BlogApp.Controllers
 
 			ViewBag.Tags = _tagRepository.Tags.ToList();
 
-			var entity = new PostCreateViewModel
-			{
-				Title = post.Title,
-				Content = post.Content,
-				Description = post.Description,
-				IsActive = post.IsActive,
-				Url = post.Url,
-				PostId = post.Id,
-				Tags = post.Tags
-			};
+			//var entity = new PostCreateViewModel
+			//{
+			//	Title = post.Title,
+			//	Content = post.Content,
+			//	Description = post.Description,
+			//	IsActive = post.IsActive,
+			//	Url = post.Url,
+			//	PostId = post.Id,
+			//	Tags = post.Tags
+			//};
+			var entity = _mapper.Map<PostCreateViewModel>(post);
+			
 			return View(entity);
 		}
 		[Authorize]
@@ -192,7 +203,7 @@ namespace BlogApp.Controllers
 			{
 				var entityToUpdate = new Post
 				{
-					Id = model.PostId,
+					Id = model.Id,
 					Title = model.Title,
 					Description = model.Description,
 					Content = model.Content,
@@ -202,10 +213,10 @@ namespace BlogApp.Controllers
 				{
 					entityToUpdate.IsActive = model.IsActive; //postu editleyen kisi admin ise postu aktif etme yetkisine sahip olsun
 				}
-				_postRepository.EditPostAsync(entityToUpdate,tagIds);
+				_postRepository.EditPostAsync(entityToUpdate, tagIds);
 				return RedirectToAction("List");
 			}
-			ViewBag.Tags = _tagRepository.Tags.ToList();	
+			ViewBag.Tags = _tagRepository.Tags.ToList();
 			return View(model);
 		}
 	}
